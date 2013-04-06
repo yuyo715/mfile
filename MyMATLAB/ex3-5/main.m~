@@ -1,0 +1,19 @@
+Y = admittance(N,R,Tr);
+
+
+[dP,dQ,dV] = PandQ(N,Y,PQ,Ps,Qs,Vs,e,f);
+Jacobi = jacobi(N,Y,e,f,PQorPV,NonRef)
+def = delta(N,PQorPV,NonRef,dP,dQ,dV,Jacobi,e,f);
+
+while abs(max(def)) > 0.00001 || abs(min(def)) > 0.00001 
+  for k = 1:N-1
+    e(NonRef(k)) = e(NonRef(k)) + def(2*k-1);
+    f(NonRef(k)) = f(NonRef(k)) + def(2*k);
+  end
+  [dP,dQ,dV] = PandQ(N,Y,PQ,Ps,Qs,Vs,e,f);
+  Jacobi = jacobi(N,Y,e,f,PQorPV,NonRef);
+  def = delta(N,PQorPV,NonRef,dP,dQ,dV,Jacobi,e,f);
+end
+
+
+    
